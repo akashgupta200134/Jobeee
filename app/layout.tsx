@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Inter, Playfair_Display, Space_Grotesk } from "next/font/google";
-import Navbar from "./common/Navbar";
-import Footer from "./common/Footer";
+import { ClerkProvider } from "@clerk/nextjs";
 
 // app/layout.tsx or wherever you want to use them
 
@@ -37,14 +36,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+       <ClerkProvider>
     <html lang="en" className={`${inter.variable} ${playfair.variable} ${spaceGrotesk.variable}`}>
-      <body
-        className={inter.className}
-      >
-        <Navbar/>
+      <body className={inter.className}>
         {children}
-        <Footer/>
       </body>
     </html>
+    </ClerkProvider>
   );
 }
+

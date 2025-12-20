@@ -10,20 +10,20 @@ const Navbar: FC = () => {
         <div className="flex items-center gap-2">
           <span className="text-xl font-semibold tracking-tight text-zinc-900">
             <Link href="/">
-              Job<span className="text-primary">Portal</span>
+              Jobeee
             </Link>
           </span>
         </div>
 
         {/* Navigation Buttons */}
         <div className="flex items-center gap-3">
-          <Link href="/login">
+          <Link href="/sign-in">
             <Button variant="ghost" className="hidden sm:inline-flex">
               Login
             </Button>
           </Link>
 
-          <Link href="/signup">
+          <Link href="/sign-up">
             <Button>Get Started</Button>
           </Link>
         </div>

@@ -42,13 +42,13 @@ const HeroSection: FC = () => {
           transition={{ delay: 1, duration: 1 }}
           className="mt-10 flex flex-col gap-4 sm:flex-row sm:gap-6"
         >
-          <Link href="/signup/jobseeker" passHref>
+          <Link href="/sign-up" passHref>
             <Button size="lg" className="px-8">
               Apply for Jobs
             </Button>
           </Link>
 
-          <Link href="/signup/recruiter" passHref>
+          <Link href="/sign-up" passHref>
             <Button size="lg" variant="outline" className="px-8">
               Post a Job
             </Button>
@@ -65,7 +65,7 @@ const HeroSection: FC = () => {
         }
 
         .animate-gradient {
-          animation: gradientBG 15s ease infinite;
+          animation: gradientBG 15s infinite;
         }
       `}</style>
     </section>
