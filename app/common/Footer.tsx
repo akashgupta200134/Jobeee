@@ -1,4 +1,5 @@
-// components/Footer.tsx
+"use client"
+
 import { Github, Instagram, Twitter } from "lucide-react";
 import Link from "next/link";
 import { FC } from "react";

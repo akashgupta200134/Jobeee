@@ -1,18 +1,15 @@
+import { Button } from "@/components/ui/button";
 import { SignIn } from "@clerk/nextjs";
-import { div } from "framer-motion/client";
+import Link from "next/link";
 
-export default function Signup(){
-    return(
-        <div>
-                     
-                <SignIn/>    
-          
-        </div>
-    )
-    
-    
-    
-    
+export default function Signup() {
+  return (
+    <div>
+      <Link href="/">
+       <Button>Go to Home</Button>
+      </Link>
+      <SignIn />
+    </div>
+  );
 }
-
 

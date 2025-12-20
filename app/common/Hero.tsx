@@ -1,4 +1,4 @@
-// components/HeroSection.tsx
+
 "use client";
 
 import { FC } from "react";
@@ -8,17 +8,14 @@ import { motion } from "framer-motion";
 
 const HeroSection: FC = () => {
   return (
-    <section className="relative w-full h-screen overflow-hidden">
-      {/* Animated Gradient Background */}
-      <div className="absolute inset-0 animate-gradient bg-[linear-gradient(270deg,#ff6ec4,#7873f5,#42e695,#3bb2b8)] bg-[length:400%_400%] z-0"></div>
-
+    <section className="relative w-full h-screen bg-white">
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-24 flex flex-col items-center justify-center text-center h-full">
         {/* Animated Heading */}
         <motion.h1
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="max-w-5xl text-4xl font-extrabold tracking-tight text-white sm:text-5xl lg:text-6xl"
+          className="max-w-5xl text-4xl font-extrabold tracking-tight text-yellow-200 sm:text-5xl lg:text-6xl"
         >
           Get Hired for Your Skills. <br />
           <span className="text-primary">Hire Talent That Delivers.</span>
@@ -63,11 +60,12 @@ const HeroSection: FC = () => {
           50% { background-position: 100% 50%; }
           100% { background-position: 0% 50%; }
         }
-
         .animate-gradient {
           animation: gradientBG 15s infinite;
-        }
-      `}</style>
+        }`}
+        
+        
+    </style>
     </section>
   );
 };
