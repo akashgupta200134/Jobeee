@@ -9,8 +9,8 @@ import WordRotator from "@/components/ui/wordrotater";
 
 const Navbar: FC = () => {
   return (
-    <header className="sticky  w-full">
-      <div className="mx-auto flex h-16 max-w-8xl items-center justify-between px-6">
+    <header className="sticky   w-full">
+      <div className="mx-auto flex h-16 max-w-8xl items-center justify-between px-6 ">
         {/* Logo */}
         <div className="flex items-center gap-1">
           <span className="text-xl font-semibold tracking-tight text-[#1b2a24]">

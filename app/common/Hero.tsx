@@ -1,71 +1,83 @@
-
 "use client";
 
 import { FC } from "react";
 import { Button } from "../../components/ui/button";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Lottie from "lottie-react";
+import HeroLottie from "@/public/Hiring.json";
 
 const HeroSection: FC = () => {
   return (
-    <section className="relative w-full h-screen bg-[#e7ebe6]">
-      <div className="relative z-10 mx-auto max-w-7xl px-6 py-24 flex flex-col items-center justify-center text-center h-full">
-        {/* Animated Heading */}
-        <motion.h1
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className="max-w-5xl text-4xl font-extrabold tracking-tight text-[#3a6956] sm:text-5xl lg:text-6xl"
-        >
-          Get Hired for Your Skills. <br />
-          <span className="text-primary">Hire Talent That Delivers.</span>
-        </motion.h1>
+    <section className="relative w-full min-h-screen  bg-[#e7ebe6]">  
+     <div className="relative z-10 mx-auto max-w-7xl px-6 pt-5 pb-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
-        {/* Animated Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 1 }}
-          className="mt-6 max-w-2xl text-lg text-[#6B7280] sm:text-xl"
-        >
-          A smart job portal connecting skilled professionals with trusted recruiters.
-          Fast hiring. Verified talent. Real opportunities.
-        </motion.p>
+        {/* Left Content */}
+        <div className="text-center lg:text-left">
+          <motion.h1
+            initial={{ opacity: 0, y: -40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: "easeOut" }}
+            className="text-5xl sm:text-4xl lg:text-6xl font-extrabold tracking-tight text-[#1b2a24]"
+          >
+            Get Hired for Your Skills.
+            <br />
+            <span className="bg-gradient-to-r from-[#3a6956] to-[#5ea88c] bg-clip-text text-transparent">
+              Hire Talent That Delivers.
+            </span>
+          </motion.h1>
 
-        {/* CTA Buttons */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="mt-6 max-w-xl mx-auto lg:mx-0 text-lg text-[#4b5563]"
+          >
+            A smart hiring platform connecting skilled professionals with trusted recruiters.
+            Faster hiring. Verified talent. Real opportunities.
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.8 }}
+            className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+          >
+            <Link href="/sign-up">
+              <Button
+                size="lg"
+                className="px-8 bg-[#3a6956] hover:bg-[#2f5a49] text-white shadow-lg"
+              >
+                Apply for Jobs
+              </Button>
+            </Link>
+
+            <Link href="/sign-up">
+              <Button
+                size="lg"
+                variant="outline"
+                className="px-8 border-[#3a6956] text-[#3a6956] hover:bg-[#3a6956] hover:text-white"
+              >
+                Post a Job
+              </Button>
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* Right Animation */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1, duration: 1 }}
-          className="mt-10 flex flex-col gap-4 sm:flex-row sm:gap-6"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.5, duration: 0.9 }}
+          className="flex justify-center -mt-12"
         >
-          <Link href="/sign-up" passHref>
-            <Button size="lg" className="px-8">
-              Apply for Jobs
-            </Button>
-          </Link>
-
-          <Link href="/sign-up" passHref>
-            <Button size="lg" variant="outline" className="px-8">
-              Post a Job
-            </Button>
-          </Link>
+          <Lottie
+            animationData={HeroLottie}
+            className="w-[400px] sm:w-[380px] lg:w-[600px]"
+          />
         </motion.div>
       </div>
-
-      {/* Tailwind CSS Gradient Animation */}
-      <style jsx global>{`
-        @keyframes gradientBG {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        .animate-gradient {
-          animation: gradientBG 15s infinite;
-        }`}
-        
-        
-    </style>
     </section>
   );
 };
