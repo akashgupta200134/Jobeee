@@ -8,14 +8,14 @@ import { motion } from "framer-motion";
 
 const HeroSection: FC = () => {
   return (
-    <section className="relative w-full h-screen bg-white">
+    <section className="relative w-full h-screen bg-[#e7ebe6]">
       <div className="relative z-10 mx-auto max-w-7xl px-6 py-24 flex flex-col items-center justify-center text-center h-full">
         {/* Animated Heading */}
         <motion.h1
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1 }}
-          className="max-w-5xl text-4xl font-extrabold tracking-tight text-yellow-200 sm:text-5xl lg:text-6xl"
+          className="max-w-5xl text-4xl font-extrabold tracking-tight text-[#3a6956] sm:text-5xl lg:text-6xl"
         >
           Get Hired for Your Skills. <br />
           <span className="text-primary">Hire Talent That Delivers.</span>
@@ -26,7 +26,7 @@ const HeroSection: FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5, duration: 1 }}
-          className="mt-6 max-w-2xl text-lg text-white/90 sm:text-xl"
+          className="mt-6 max-w-2xl text-lg text-[#6B7280] sm:text-xl"
         >
           A smart job portal connecting skilled professionals with trusted recruiters.
           Fast hiring. Verified talent. Real opportunities.
