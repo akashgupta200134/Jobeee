@@ -1,44 +1,47 @@
-"use client"
-
+"use client";
 import { FC } from "react";
-import { Button } from "../../components/ui/button";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Image from "next/image";
-import Logo from "@/public/logo.png"
+import Logo from "@/public/logo.png";
 import WordRotator from "@/components/ui/wordrotater";
 
 const Navbar: FC = () => {
   return (
-    <header className="sticky   w-full">
-      <div className="mx-auto flex h-16 max-w-8xl items-center justify-between px-6 ">
-        {/* Logo */}
-        <div className="flex items-center gap-1">
-          <span className="text-xl font-semibold tracking-tight text-[#1b2a24]">
-            <Link href="/">
-              <Image src={Logo} className="w-12 h-12 ml-10  object-contain" />
-            </Link>
-          </span>
-          <span>/</span>
-          <WordRotator>
-            <p className="text-[#1b2a24] text-lg font-medium tracking-wide">
-              hello@hirenova.com
-            </p>
-          </WordRotator>
+    <header className="sticky top-0 w-full z-50">
+      <div className="mx-auto flex h-20 max-w-8xl items-center justify-between px-6 md:px-12">
+        {/* Logo & Email */}
+        <div className="flex items-center gap-4">
+          <Link href="/">
+            <Image
+              src={Logo}
+              alt="Hirenova Logo"
+              className="w-14 h-14 object-contain"
+              priority
+            />
+          </Link>
+          <div className="hidden md:flex flex-col">
+
+            <WordRotator>
+              <p className="text-[#1b2a24] font-semibold text-base tracking-wide">
+                hello@hirenova.com
+              </p>
+            </WordRotator>
+          </div>
         </div>
 
-        {/* Navigation Buttons */}
-        <div className="flex items-center gap-3">
+        {/* Auth Buttons */}
+        <div className="flex items-center gap-4">
           <Link href="/sign-in">
             <Button
               variant="ghost"
-              className="hidden bg-[#c0b283] sm:inline-flex"
+              className="hidden sm:inline-flex text-[#1b2a24] border border-[#c0b283] hover:bg-[#c0b283] hover:text-white transition-all duration-300"
             >
               Login
             </Button>
           </Link>
-
           <Link href="/sign-up">
-            <Button className="bg-[#c0b283] text-black  hover:bg-white">
+            <Button className="bg-[#c0b283] text-black hover:bg-[#a99865] hover:text-white transition-all duration-300 shadow-md">
               Get Started
             </Button>
           </Link>

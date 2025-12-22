@@ -5,8 +5,9 @@ export default function MainLayout({
   children}: {children: React.ReactNode;}){
   return (
     <>
-      <Navbar/>
+     
       <main className="min-h-screen bg-[#e9ece6]">
+         <Navbar/>
         {children}
         </main>
       {/* <Footer/> */}
