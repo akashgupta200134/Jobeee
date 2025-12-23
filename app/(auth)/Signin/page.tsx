@@ -3,7 +3,9 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Lottie from "lottie-react";
-import LoginLottie from "@/public/Login.json";
+import LoginLottie from "@/public/Pin code Password Protection, Secure Login animation - Copy.json";
+import { ArrowBigLeft, ArrowBigLeftIcon, ArrowLeftToLine } from "lucide-react";
+import Link from "next/link";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -15,43 +17,48 @@ export default function SignInPage() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      const res = await fetch("/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+  try {
+    const res = await fetch("/api/user/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-      if (!res.ok) {
-        throw new Error("Invalid credentials");
-      }
+    const data = await res.json();
 
-      const data = await res.json();
-
-      // 🔐 store token (later move to httpOnly cookie)
-      localStorage.setItem("token", data.token);
-
-      // ✅ redirect based on role
-    //   router.push(`/dashboard/${data.role}`);
-    
-    } catch (error) {
-      alert("Invalid email or password");
-    } finally {
-      setLoading(false);
+    if (!res.ok) {
+      throw new Error(data.message || "Login failed");
     }
-  };
+
+    // ✅ JWT is already stored in httpOnly cookie
+    // ✅ Redirect using role from backend
+    router.push(`/dashboard/${data.user.role}`);
+
+  } catch (error: any) {
+    alert(error.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
-    <div className="min-h-screen mt-4 flex items-center justify-center mb-5 px-6">
+    <div className="min-h-screen  flex items-center justify-center  px-6">
       <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 bg-white rounded-xl shadow-xl overflow-hidden">
 
         {/* LEFT FORM */}
         <div className="p-5">
+          <Link href="/">
+              <div className="p-2 w-44 rounded-lg  mb-4 flex flex-row items-center gap-2 border bg-emerald-600 text-white  justify-center" >
+            <ArrowLeftToLine/>
+            <span>Go to homepage</span>
+          </div>
+          </Link>
           <h2 className="text-3xl font-bold text-zinc-900">Welcome Back</h2>
 
           <p className="text-sm text-zinc-500 mt-1">

@@ -3,6 +3,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import SignupLottie from "@/public/Login.json";
+import { ArrowLeftToLine } from "lucide-react";
+import Link from "next/link";
 
 type Role = "jobseeker" | "recruiter";
 
@@ -59,6 +61,7 @@ export default function SignUpPage() {
     if (resume) data.append("resume", resume);
 
     const res = await fetch("/api/user/register", {
+
       method: "POST",
       body: data,
     });
@@ -68,7 +71,7 @@ export default function SignUpPage() {
     }
 
     // ✅ SUCCESS → redirect to login
-    router.push("/auth/login?success=true");
+    router.push("/signin?success=true");
   } catch (error) {
     alert("Signup failed. Please try again.");
   } finally {
@@ -79,10 +82,19 @@ export default function SignUpPage() {
   if (!role) return null;
 
   return (
-    <div className="min-h-screen mt-4 flex items-center justify-center mb-5 px-6">
+    <>   
+   
+    <div className=" relative min-h-screen mt-4 flex items-center justify-center mb-5 px-6">
+      <Link href="/">
+       <div className=" absolute p-1 w-40 mt-2 text-sm top-1 left-37 rounded-lg  flex flex-row items-center gap-1 border bg-emerald-600 text-white  justify-center" >
+        <ArrowLeftToLine/>
+        <span>Go to homepage</span>
+        </div>
+      </Link>
+   
       <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 bg-white rounded-xl shadow-xl overflow-hidden">
         {/* LEFT FORM */}
-        <div className="p-5">
+        <div className="p-5 mt-10">
           <h2 className="text-3xl font-bold text-zinc-900">
             Sign up as <span className="text-[#388667] capitalize">{role}</span>
           </h2>
@@ -218,7 +230,7 @@ export default function SignUpPage() {
 
             <p className="text-sm text-center text-zinc-500">
               Already have an account?{" "}
-              <a href="/login" className="text-emerald-600 font-medium">
+              <a href="/signin" className="text-emerald-600 font-medium">
                 Login
               </a>
             </p>
@@ -231,5 +243,6 @@ export default function SignUpPage() {
         </div>
       </div>
     </div>
+     </>
   );
 }

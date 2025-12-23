@@ -2,7 +2,7 @@ import { connectDB } from "@/app/connectDB";
 import { User } from "@/app/models/User"; // Ensure this path points to your model file
 import { NextRequest, NextResponse } from "next/server";
 import uploadFile from "@/app/middlewares/upload"; // Ensure this path is correct
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
 export async function POST(req: NextRequest) {

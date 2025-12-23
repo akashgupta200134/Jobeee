@@ -1,56 +1,67 @@
 import mongoose from "mongoose";
 
-const MONGODB_URL = process.env.MONGODB_URL as string;
+const MONGODB_URL = process.env.MONGODB_URL;
 
 if (!MONGODB_URL) {
-  throw new Error("Please define the MONGODB_URL environment variable inside .env.local");
+  throw new Error(
+    "❌ Please define the MONGODB_URL environment variable in .env.local"
+  );
 }
 
-// Global interface to prevent TypeScript errors on the global object
+/**
+ * Global cache interface
+ * Prevents multiple DB connections during hot reloads
+ */
 interface MongooseCache {
   conn: typeof mongoose | null;
   promise: Promise<typeof mongoose> | null;
 }
 
+/**
+ * Extend global type safely
+ */
 declare global {
-  var mongoose: MongooseCache;
+  // eslint-disable-next-line no-var
+  var mongoose: MongooseCache | undefined;
 }
 
-// 1. Use a cached connection if it exists
-let cached = global.mongoose;
+/**
+ * Initialize global cache
+ */
+const cached: MongooseCache =
+  global.mongoose || (global.mongoose = { conn: null, promise: null });
 
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
-
-export const connectDB = async () => {
-  // 2. If already connected, return the existing connection
+/**
+ * Connect to MongoDB
+ */
+export async function connectDB(): Promise<typeof mongoose> {
+  // ✅ Reuse existing connection
   if (cached.conn) {
-    console.log("🚀 Using cached MongoDB connection");
     return cached.conn;
   }
 
-  // 3. If no connection promise exists, create one
+  // ✅ Create new connection if none exists
   if (!cached.promise) {
-    const opts = {
-      dbName: "HireNova",
-      bufferCommands: false,
+    const options = {
+      dbName: "HireNova",     // 🔹 your DB name
+      bufferCommands: false, // 🔥 prevents buffering timeout
     };
 
-    cached.promise = mongoose.connect(MONGODB_URL, opts).then((mongoose) => {
-      console.log("✅ New MongoDB connection established");
-      return mongoose;
-    });
+    cached.promise = mongoose
+      .connect(MONGODB_URL, options)
+      .then((mongooseInstance) => {
+        console.log("✅ MongoDB connected");
+        return mongooseInstance;
+      });
   }
 
   try {
     cached.conn = await cached.promise;
-  } catch (e) {
+  } catch (error) {
     cached.promise = null;
-    throw e; // 4. Throw error instead of killing the process
+    console.error("❌ MongoDB connection failed", error);
+    throw error;
   }
 
   return cached.conn;
-};
-
-
+}
