@@ -2,9 +2,9 @@ import { v2 as cloudinary, UploadApiResponse } from "cloudinary";
 
 // 1. Configuration (Fixed spelling errors in env variables)
 cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,    // Fixed "CLOUNDINARY" -> "CLOUDINARY" & removed 'S' from KEYS
-  api_secret: process.env.CLOUDINARY_API_SECRET // Fixed "CLOUNDINARY"
+  cloud_name:process.env.CLOUD_NAME,
+  api_key:process.env.CLOUDINARY_API_KEY,  
+  api_secret:process.env.CLOUDINARY_API_SECRET,
 });
 
 const uploadFile = async (file: File): Promise<UploadApiResponse> => {
@@ -16,7 +16,7 @@ const uploadFile = async (file: File): Promise<UploadApiResponse> => {
       {
         folder: "hirenova",
         access_mode: "public",
-        resource_type: "auto", // IMPORTANT: Allows PDF/Raw files (resumes) + Images
+        resource_type: "auto",
       },
       (error, result) => {
         // 2. Critical: Actually handle the error!

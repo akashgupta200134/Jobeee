@@ -32,7 +32,7 @@ const Navbar: FC = () => {
 
         {/* Auth Buttons */}
         <div className="flex items-center gap-4">
-          <Link href="/sign-in">
+          <Link href="/signin">
             <Button
               variant="ghost"
               className="hidden sm:inline-flex text-[#1b2a24] border border-[#c0b283] hover:bg-[#c0b283] hover:text-white transition-all duration-300"
@@ -40,7 +40,7 @@ const Navbar: FC = () => {
               Login
             </Button>
           </Link>
-          <Link href="/sign-up">
+          <Link href="/role">
             <Button className="bg-[#c0b283] text-black hover:bg-[#a99865] hover:text-white transition-all duration-300 shadow-md">
               Get Started
             </Button>

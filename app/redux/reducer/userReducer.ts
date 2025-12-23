@@ -54,6 +54,20 @@ const userSlice = createSlice({
       state.error = action.payload;
     },
 
+       loginSuccess: (state, action: PayloadAction<{ user: any; message: string }>) => {
+      state.btnLoading = false;
+      state.user = action.payload.user;
+      state.isAuth = true; 
+      state.message = action.payload.message;
+    },
+
+     loginFail: (state, action: PayloadAction<string>) => {
+      state.btnLoading = false;
+      state.user = null;
+      state.isAuth = false; 
+      state.error = action.payload;
+    },
+
     clearMessage: (state) => {
       state.message = null;
     },
@@ -66,7 +80,9 @@ const userSlice = createSlice({
 
 export const {
   loadingStart,
+  loginSuccess,
   btnLoadingStart,
+  loginFail,
   registerFail,
   registerSuccess,
   clearMessage,
