@@ -2,6 +2,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import {
   btnLoadingStart,
+  getSuccessUser,
+  getUserFailed,
+  loadingStart,
   loginFail,
   loginSuccess,
   registerFail,
@@ -73,5 +76,34 @@ export const loginUser = ({ email, password }: LoginData) => async (dispatch: an
     );
   } catch (error: any) {
     dispatch(loginFail(error.response?.data?.message || "Invalid credentials"));
+  }
+};
+
+
+export const getUser = () => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch(loadingStart());
+
+    // 1. Get token safely
+    const token: string | undefined = Cookies.get("token");
+
+    // 2. Stop if no token exists (prevents "jwt malformed" error)
+    if (!token || token === "undefined") {
+      dispatch(getUserFailed("No token found, please login."));
+      return;
+    }
+
+    // 3. Make the call with the valid token
+    // Note: You can replace <any> with your User interface (e.g., <User>)
+    const { data } = await axios.get<any>(`/api/user/myprofile?token=${token}`);
+
+    dispatch(getSuccessUser(data));
+    
+  } catch (error: any) {
+    // Optional: If error is 401, you might want to remove the invalid cookie
+    // Cookies.remove("token"); 
+    
+    const errorMessage = error.response?.data?.message || "Failed to fetch user";
+    dispatch(getUserFailed(errorMessage));
   }
 };

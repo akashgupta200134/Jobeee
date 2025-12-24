@@ -16,7 +16,7 @@ interface UserState {
 const initialState: UserState = {
   user: null,
   userProfile: null,
-  isAuth: false, // Default should usually be false until logged in
+  isAuth: true, // Default should usually be false until logged in
   savedJobs: null,
   loading: false,
   btnLoading: false,
@@ -61,6 +61,20 @@ const userSlice = createSlice({
       state.message = action.payload.message;
     },
 
+   getSuccessUser: (state, action: PayloadAction<any>) => {
+      state.loading = false;
+      state.user = action.payload;
+      state.isAuth = true;
+      state.error = null; 
+    },
+
+       getUserFailed: (state, action: PayloadAction<string>) => {
+      state.loading = false;
+      state.isAuth = false;
+      state.user = null;
+      state.error = action.payload; // Now you can see why it failed
+    },
+
      loginFail: (state, action: PayloadAction<string>) => {
       state.btnLoading = false;
       state.user = null;
@@ -82,6 +96,8 @@ export const {
   loadingStart,
   loginSuccess,
   btnLoadingStart,
+  getSuccessUser,
+  getUserFailed,
   loginFail,
   registerFail,
   registerSuccess,

@@ -4,20 +4,27 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import Lottie from "lottie-react";
 import LoginLottie from "@/public/Pin code Password Protection, Secure Login animation - Copy.json";
-import { ArrowBigLeft, ArrowBigLeftIcon, ArrowLeftToLine } from "lucide-react";
+import {ArrowLeftToLine } from "lucide-react";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { loginUser } from "@/app/redux/action/user";
+import { useSelector } from "react-redux";
 
 export default function SignInPage() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const searchParams = useSearchParams();
   const success = searchParams.get("success");
-
+  // const {isAuth}  = useSelector( state => state.user) 
+ 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
+  dispatch(loginUser(email, password));
+
   setLoading(true);
 
   try {

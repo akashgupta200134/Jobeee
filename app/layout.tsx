@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Inter, Playfair_Display, Space_Grotesk } from "next/font/google";
 import ProviderRedux from "./providerredux";
+import UserMessage from "./userMessage";
 
 // app/layout.tsx or wherever you want to use them
 
@@ -38,7 +39,9 @@ export default function RootLayout({
       className={`${inter.variable} ${playfair.variable} ${spaceGrotesk.variable}`}
     >
       <body className={inter.className}>
-        <ProviderRedux>{children}</ProviderRedux>
+        <ProviderRedux>{children}
+          <UserMessage/>
+        </ProviderRedux>
       </body>
     </html>
   );

@@ -44,7 +44,7 @@ const HeroSection: FC = () => {
             transition={{ delay: 0.8, duration: 0.8 }}
             className="mt-10 flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
           >
-            <Link href="/sign-up">
+            <Link href="/signup?role=jobseeker">
               <Button
                 size="lg"
                 className="px-8 bg-[#3a6956] hover:bg-[#2f5a49] text-white shadow-lg"
@@ -53,7 +53,7 @@ const HeroSection: FC = () => {
               </Button>
             </Link>
 
-            <Link href="/sign-up">
+            <Link href="/signup?role=recruiter">
               <Button
                 size="lg"
                 variant="outline"
