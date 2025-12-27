@@ -8,58 +8,56 @@ export async function POST(req: NextRequest) {
   try {
     await connectDB();
 
-    // 1️⃣ Parse JSON body
     const body = await req.json();
     const email = body.email?.toLowerCase();
     const password = body.password;
 
+    // 1. Validate Input
     if (!email || !password) {
+      console.log("❌ Login Attempt Failed: Missing email or password");
       return NextResponse.json(
         { message: "Email and password are required" },
         { status: 400 }
       );
     }
 
-    // 2️⃣ Find user by email
-   const user = await User.findOne({ email: email.toLowerCase() }).select("+password");
+    // 2. Find User
+    const user = await User.findOne({ email }).select("+password");
 
-    if (!user || !user.password) {
-      console.log("Login failed: user not found or password missing", email);
+    if (!user) {
+      console.log(`❌ Login Attempt Failed: User not found for email '${email}'`);
       return NextResponse.json(
         { message: "Invalid email or password" },
         { status: 400 }
       );
     }
 
-    // 3️⃣ Compare password safely
+    // 3. Check Password
     const isMatch = await bcrypt.compare(password, user.password);
+    
     if (!isMatch) {
-      console.log("Login failed: password mismatch", email);
+      console.log(`❌ Login Attempt Failed: Wrong password for '${email}'`);
       return NextResponse.json(
         { message: "Invalid email or password" },
         { status: 400 }
       );
     }
 
-    // 4️⃣ Generate JWT
+    // 4. Generate Token (FIXED)
     if (!process.env.JWT_SECRET) {
       throw new Error("JWT_SECRET not defined");
     }
+
+    // ✅ FIX: Changed 'id' to 'userId' to match your CheckAuth middleware!
     const token = jwt.sign(
-      { id: user._id, role: user.role },
+      { userId: user._id, role: user.role }, 
       process.env.JWT_SECRET,
       { expiresIn: "5d" }
     );
 
-    if (!user) {
-  console.log("Login failed: user not found for", email);
-}
-if (!isMatch) {
-  console.log("Login failed: password mismatch for", email);
-}
+    console.log(`✅ Login Success for user: ${user.name}`);
 
-
-    // 5️⃣ Return response (token + user data without password)
+    // 5. Return Response
     return NextResponse.json(
       {
         message: "Login successful",
@@ -76,7 +74,7 @@ if (!isMatch) {
     );
 
   } catch (error: any) {
-    console.error("Login error:", error);
+    console.error("❌ Login Server Error:", error);
     return NextResponse.json(
       { message: error.message || "Internal server error" },
       { status: 500 }

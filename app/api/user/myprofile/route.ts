@@ -1,47 +1,42 @@
 import { connectDB } from "@/app/connectDB";
 import CheckAuth from "@/app/middlewares/isAuth";
-import { User } from "@/app/models/User";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     try {
         await connectDB();
 
-        const { searchParams } = new URL(req.url);
-        const token = searchParams.get("token");
+        // ❌ WRONG: This looks for url.com?token=123 (which you are NOT sending)
+        // const { searchParams } = new URL(req.url);
+        // const token = searchParams.get("token");
 
-        // FIX: Check for missing token OR literal "undefined" string
-        if (!token || token === "undefined" || token === "null") {
+        // ✅ CORRECT: This looks for the "Authorization" header you sent
+        const authHeader = req.headers.get("authorization"); 
+
+        if (!authHeader) {
+            console.log("❌ API: No Authorization header received");
             return NextResponse.json(
-                { message: "Token missing or invalid. Please login." },
+                { message: "Token missing. Please login." },
                 { status: 401 }
             );
         }
 
-        const user = await CheckAuth(token);
+        // NOTE: Your CheckAuth function (from previous step) already handles 
+        // removing the "Bearer " prefix, so we can pass the header directly.
+        const user = await CheckAuth(authHeader);
 
         if (!user) {
             return NextResponse.json(
-                { message: "Invalid token. Please login." },
+                { message: "Invalid token or User not found." },
                 { status: 401 }
             );
         }
 
-        const loggedUser = await User.findById(user._id);
-
-        if (!loggedUser) {
-            return NextResponse.json(
-                { message: "User not found." },
-                { status: 404 }
-            );
-        }
-
-        return NextResponse.json(loggedUser);
+        // Success! Return the user data
+        return NextResponse.json(user, { status: 200 });
 
     } catch (error: any) {
-        // Updated log message to reflect actual context
         console.error("Profile Fetch Error:", error);
-        
         return NextResponse.json(
             { message: error.message || "Internal Server Error" },
             { status: 500 }

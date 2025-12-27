@@ -14,9 +14,9 @@ interface UserState {
 
 // 2. Define Initial State
 const initialState: UserState = {
-  user: null,
+  user: null, 
   userProfile: null,
-  isAuth: true, // Default should usually be false until logged in
+  isAuth: false, // ✅ Set to FALSE by default
   savedJobs: null,
   loading: false,
   btnLoading: false,
@@ -54,21 +54,23 @@ const userSlice = createSlice({
       state.error = action.payload;
     },
 
-       loginSuccess: (state, action: PayloadAction<{ user: any; message: string }>) => {
-      state.btnLoading = false;
-      state.user = action.payload.user;
-      state.isAuth = true; 
-      state.message = action.payload.message;
-    },
+   loginSuccess: (state, action: PayloadAction<{ user: any; message: string }>) => {
+  state.btnLoading = false;
+  state.loading = false; // <--- ADD THIS LINE SAFETY NET
+  state.user = action.payload.user;
+  state.isAuth = true; 
+  state.message = action.payload.message;
+},
 
-   getSuccessUser: (state, action: PayloadAction<any>) => {
-      state.loading = false;
-      state.user = action.payload;
-      state.isAuth = true;
-      state.error = null; 
-    },
+getSuccessUser: (state, action: PayloadAction<any>) => {
+  console.log("✅ Reducer: User fetch success", action.payload);
+  state.loading = false; 
+  state.isAuth = true;
+  state.user = action.payload?.user || action.payload; 
+  state.error = null;
+},
 
-       getUserFailed: (state, action: PayloadAction<string>) => {
+      getUserFailed: (state, action: PayloadAction<string | null>) => {
       state.loading = false;
       state.isAuth = false;
       state.user = null;
@@ -81,6 +83,15 @@ const userSlice = createSlice({
       state.isAuth = false; 
       state.error = action.payload;
     },
+
+    logoutUserSuccess: (state) => {
+    state.user = null;
+    state.isAuth = false;
+    state.loading = false;
+    state.error = null;
+    state.message = "Logged out successfully";
+  },
+
 
     clearMessage: (state) => {
       state.message = null;
@@ -99,6 +110,7 @@ export const {
   getSuccessUser,
   getUserFailed,
   loginFail,
+  logoutUserSuccess,
   registerFail,
   registerSuccess,
   clearMessage,

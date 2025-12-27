@@ -1,21 +1,24 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-// 1. Define an interface representing a document in MongoDB.
+// 1. Define the Interface (TypeScript Type)
 export interface IUser extends Document {
+  _id: mongoose.Types.ObjectId;
   name: string;
   email: string;
-  phoneNumber: string; // Changed to String
-  password?: string;   // Optional because Google/Auth providers might not have passwords
+  phoneNumber: string; 
+  password?: string;   // Optional in type because it's not returned by default queries
   role: "jobseeker" | "recruiter";
-  bio?: string;        // Made optional (recruiters might not need a bio)
+  bio?: string;        
   skills: string[];
-  resume?: string;     // URL to the resume file
-  profilePic?: string; // URL to the profile picture
-  savedJobs?: mongoose.Schema.Types.ObjectId[]; // Array of Job IDs
+  resume?: string;     
+  profilePic?: string; 
+  // ✅ FIX: Use 'Types.ObjectId' for the Interface, not 'Schema.Types...'
+  savedJobs: mongoose.Types.ObjectId[]; 
   createdAt: Date;
   updatedAt: Date;
 }
 
+// 2. Define the Schema (Mongoose Structure)
 const userSchema = new Schema<IUser>(
   {
     name: {
@@ -25,16 +28,16 @@ const userSchema = new Schema<IUser>(
     email: {
       type: String,
       required: true,
-      unique: true, // Ensure no duplicate emails
+      unique: true, 
     },
     phoneNumber: {
-      type: String, // Best practice for phone numbers
+      type: String, 
       required: true,
     },
     password: {
       type: String,
       required: true,
-      select: false, // Prevents password from being returned in queries by default
+      select: false, 
     },
     role: {
       type: String,
@@ -43,22 +46,24 @@ const userSchema = new Schema<IUser>(
     },
     bio: {
       type: String,
+      default: null,
     },
-    skills: [
-      {
-        type: String,
-      },
-    ],
+    skills: {
+      type: [String],
+      default: [],   
+    },
     resume: {
-      type: String, // Store the File URL here (Cloudinary/S3)
+      type: String, 
+      default: "",
     },
     profilePic: {
-      type: String, // Store the Image URL here
+      type: String, 
+      default: "",
     },
     savedJobs: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Job", // This links to your future 'Job' model
+        ref: "Job", 
       },
     ],
   },
@@ -67,6 +72,5 @@ const userSchema = new Schema<IUser>(
   }
 );
 
-// 2. Export the model with the "Singleton" check for Next.js
 export const User =
   (mongoose.models.User as Model<IUser>) || mongoose.model<IUser>("User", userSchema);

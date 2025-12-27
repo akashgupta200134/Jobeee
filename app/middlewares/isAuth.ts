@@ -1,36 +1,42 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
-import { User, IUser } from "../models/User"; // Assuming you export an interface 'IUser' from your model
+import { User, IUser } from "../models/User"; 
 
-// 1. Define the shape of your Token's payload
-// We extend JwtPayload so it includes standard fields like 'iat' and 'exp'
 interface AuthTokenPayload extends JwtPayload {
-  id: string;
+  userId: string;
+  role: string;
 }
 
 async function CheckAuth(token: string): Promise<IUser | null> {
   try {
     if (!token) return null;
 
-    // 2. Handle the environment variable safely
+    // ✂️ FIX: Remove "Bearer " if it exists
+    // This handles both "Bearer eyJ..." (Header) and "eyJ..." (Cookie)
+    const cleanToken = token.startsWith("Bearer ") 
+      ? token.split(" ")[1] 
+      : token;
+
     const secret = process.env.JWT_SECRET;
     if (!secret) {
-      throw new Error("JWT_SECRET is not defined in environment variables");
+      console.error("❌ JWT_SECRET is missing in .env"); // Log this for debugging
+      throw new Error("JWT_SECRET is not defined");
     }
 
-    // 3. Verify and Cast
-    // We cast to 'AuthTokenPayload' so TS knows 'decodedData.id' exists
-    const decodedData = jwt.verify(token, secret) as AuthTokenPayload;
+    // 2. Decode the CLEAN token
+    const decodedData = jwt.verify(cleanToken, secret) as AuthTokenPayload;
 
-    // 4. Find the user
-    // Mongoose's findById returns null automatically if not found
-    const user = await User.findById(decodedData.id);
+    // 3. Query the Database
+    const user = await User.findById(decodedData.userId);
+
+    if (!user) {
+        console.error("❌ Token valid, but User ID not found in DB:", decodedData.userId);
+        return null;
+    }
 
     return user; 
     
   } catch (error) {
-    // 5. Handle 'unknown' error type in TypeScript
-    const errorMessage = error instanceof Error ? error.message : "Unknown error";
-    console.error("Auth Error:", errorMessage);
+    // console.error("❌ Auth Check Failed:", error.message); // Uncomment to see exact error
     return null;
   }
 }
