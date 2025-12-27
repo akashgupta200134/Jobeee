@@ -13,6 +13,7 @@ import {
 } from "../reducer/userReducer";
 import { Dispatch } from "@reduxjs/toolkit";
 
+
 // HELPER: Only use 'secure' cookies on Production (HTTPS), not Localhost (HTTP)
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -185,5 +186,46 @@ export const logout = () => async (dispatch: Dispatch<any>) => {
 
   } catch (error) {
     console.error("Logout Error:", error);
+  }
+};
+
+
+
+
+
+// ... imports
+
+// Add this function:
+
+
+// Accepts FormData object now
+export const updateProfile = (formData: FormData) => async (dispatch: any) => {
+  try {
+    dispatch(loadingStart());
+
+    // 1. Get the token from LocalStorage (or wherever you store it)
+    const token = localStorage.getItem("token"); 
+
+    // 2. Prepare the config with Authorization
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`, // 👈 This was missing!
+        // Note: Do NOT set "Content-Type". Axios handles it for FormData.
+      },
+    };
+
+    // 3. Make the request
+    // ⚠️ NOTE: Your logs show the URL is "/api/user/updateDetails"
+    // Make sure this matches your file folder structure exactly.
+    const { data } = await axios.put("/api/user/updateDetails", formData, config);
+
+    dispatch({
+        type: "user/updateUserSuccess", 
+        payload: data
+    });
+
+  } catch (error: any) {
+    console.error("Redux Error:", error);
+    dispatch(loginFail(error.response?.data?.message || "Update Failed"));
   }
 };

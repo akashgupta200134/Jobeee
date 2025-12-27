@@ -92,7 +92,12 @@ getSuccessUser: (state, action: PayloadAction<any>) => {
     state.message = "Logged out successfully";
   },
 
-
+updateUserSuccess: (state, action) => {
+  state.loading = false;
+  state.user = action.payload.user; // Update local user data immediately
+  state.message = action.payload.message;
+  state.error = null;
+},
     clearMessage: (state) => {
       state.message = null;
     },

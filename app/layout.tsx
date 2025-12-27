@@ -33,11 +33,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
+    <html suppressHydrationWarning
       lang="en"
       className={`${inter.variable} ${playfair.variable} ${spaceGrotesk.variable}`}
     >
-      <body className={inter.className}>
+      <body className={inter.className} suppressHydrationWarning={true} >
         {/* The Provider now handles the getUser() logic automatically */}
         <ProviderRedux>
           {children}

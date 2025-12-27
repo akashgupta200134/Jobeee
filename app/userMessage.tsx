@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { toast, Toaster } from "sonner"; 
 import { RootState, AppDispatch } from "@/app/redux/store"; // Ensure AppDispatch is exported
 import { clearError, clearMessage } from "./redux/reducer/userReducer";
-import { getUser } from "./redux/action/user";
+import { getUser } from "@/app/redux/action/user";
 
 const UserMessage = () => {
   const dispatch = useDispatch<AppDispatch>(); 
